@@ -1,8 +1,6 @@
 pydantic
 pydantic-settings
-pandas
-pymongo
+"pymongo[srv]"
 fastapi
 uvicorn
-sentence-transformers
-torch
+openai

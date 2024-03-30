@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from typing import Optional
 
@@ -6,25 +7,13 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from pydantic_settings import BaseSettings
 
+from connections.database import mongodb_client
+from connections.openai import generate_embedding
+
+
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
- 
- 
-class Settings(BaseSettings):
-    # database configurations
-    MONGO_URL: Optional[str] = None
+    return {"message": "Hello World"}   
 
-    class Config:
-        env_file = ".env"
-        from_attributes = True
-
-# Create a new client and connect to the server
-client = MongoClient(Settings().MONGO_URL, server_api=ServerApi('1'))
-
-# Send a ping to confirm a successful connection
-try:
-    client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e)
+if __name__ == '__main__':
+    uvicorn.run('main:app', host='127.0.0.1', port=8000, log_level='info', reload=True)
